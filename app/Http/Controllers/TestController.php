@@ -3,29 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Person;
 
 class TestController extends Controller
 {
    public function index(){
-       $test_variable = 666;
-        return view('test.test1', [
-            'test_variable' => $test_variable
-        ]);
+    //    $test_variable = 666;
+    //     return view('test.test1', [
+    //         'test_variable' => $test_variable
+    //     ]);
+        $people = Person::orderBy('fname')->get();
+        return $people->toJson();
    }
 
-   public function testForm(Request $request){
-        $fname = $request->input('fname');
-        $lname = $request->input('lname');
-        $agree = $request->input('agree');
-        // console.log($lname);
-        // console.log($agree);
-        // return redirect()
-        //     ->route('test');
-        return view('test.test2', [
-            'fname' => $fname,
-            'lname' => $lname,
-            'agree' => $agree
+   public function store(Request $request){
+        $validatedData = $request->validate([
+            'fname' => 'required|max:5',
+            'lname' => 'required|max:5'
         ]);
-        //return $request->all();
+
+        // $person = new Person();
+        // $person->fname = $validatedData['fname'];
+        // $person->lname = $validatedData['lname'];
+        // $person.save();    
+        $person = Person::create([
+            'fname' => $validatedData['fname'],
+            'lname' => $validatedData['lname']
+        ]);
+        return response()->json('Person created!');
+   }
+
+   public function show($id)
+   {
+       $person = Person::find($id);
+       return $person->toJson();
    }
 }

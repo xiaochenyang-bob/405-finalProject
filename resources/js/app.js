@@ -13,5 +13,5 @@ require('./bootstrap');
  */
 
 require('./components/App');
-require('./components/Test1');
-require('./components/Test2');
+// require('./components/NewPerson');
+// require('./components/PeopleList');
