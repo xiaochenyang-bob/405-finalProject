@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Person;
+use App\Fileupload;
 
 class TestController extends Controller
 {
@@ -36,6 +37,50 @@ class TestController extends Controller
    public function show($id)
    {
        $person = Person::find($id);
-       return $person->toJson();
+       $image = Person::find($id)->fileuploads;
+       $data = [
+            'person' => $person,
+            'image' => $image
+       ];    
+       return \json_encode($data);
+   }
+
+
+   public function fileStore($id, Request $request)
+   {
+    //     $request->validate([
+    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //     ]);
+    //     $imageName = time().'.'.$request->image->extension();  
+
+    //     $request->image->move(public_path('images'), $imageName);
+    // //     if($request->input('image'))
+    // //     {
+    // // //    $validatedData = 
+    // //         $image = $request->input('image');
+    // //         $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+    // //         \Image::make($request->input('image'))->save(public_path('images/').$name);
+    // //    }
+    //    //save the file's information in fileuploads table
+    //    $person = Fileupload::create([
+    //         'filename' => $imageName,
+    //         'PersonId' => $id
+    //     ]);
+
+    //    return response()->json('Successfully added');
+    if($request->get('file'))
+       {
+          $image = $request->get('file');
+          $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+          \Image::make($request->get('file'))->save(public_path('images/').$name);
+        }
+
+
+
+        $fileupload = new Fileupload();
+        $fileupload->filename=$name;
+        $fileupload->PersonId = $id;
+        $fileupload->save();
+        return response()->json('Successfully added');
    }
 }

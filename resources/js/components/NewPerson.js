@@ -36,6 +36,8 @@ export default class Test1 extends React.Component{
         axios.post('/api/test', person)
             .then((response)=>{
             // redirect to the homepage
+            const {fname, lname} = this.state
+            this.props.onSuccess(`Successfully created ${fname} ${lname}`)
             history.push('/')
         }).catch(error => {
             this.setState({
@@ -68,7 +70,6 @@ export default class Test1 extends React.Component{
         return(
 
             <div>
-                Hi this is just a test
             <Form onSubmit = {this.handleSubmit}>
             <Form.Field>
             <label>First Name</label>

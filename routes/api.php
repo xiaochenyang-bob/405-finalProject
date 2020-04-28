@@ -17,4 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('test', 'TestController@index');
 Route::post('test', 'TestController@store');
 Route::get('test/{id}', 'TestController@show');
+Route::post('upload/{id}', 'TestController@fileStore');
 
