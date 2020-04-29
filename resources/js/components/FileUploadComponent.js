@@ -7,7 +7,8 @@ export default class FileUploadComponent extends Component
    constructor(props) {
       super(props);
       this.state ={
-        image: ''
+        image: '',
+        error:[]
       }
       this.onFormSubmit = this.onFormSubmit.bind(this)
       this.onChange = this.onChange.bind(this)
@@ -46,7 +47,7 @@ export default class FileUploadComponent extends Component
                     }
                 )
       }
-    
+
      render()
      {
         return(
@@ -54,7 +55,10 @@ export default class FileUploadComponent extends Component
            <Form onSubmit={this.onFormSubmit}>
                <Form.Field>
                     <label>File upload</label>
-                    <input type="file"  onChange={this.onChange} />
+                    <input 
+                      type="file"  
+                      onChange={this.onChange}
+                    />
                 </Form.Field>
                 <Form.Field>
                     <button type="submit">Upload</button>

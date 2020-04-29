@@ -48,26 +48,6 @@ class TestController extends Controller
 
    public function fileStore($id, Request $request)
    {
-    //     $request->validate([
-    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    //     ]);
-    //     $imageName = time().'.'.$request->image->extension();  
-
-    //     $request->image->move(public_path('images'), $imageName);
-    // //     if($request->input('image'))
-    // //     {
-    // // //    $validatedData = 
-    // //         $image = $request->input('image');
-    // //         $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-    // //         \Image::make($request->input('image'))->save(public_path('images/').$name);
-    // //    }
-    //    //save the file's information in fileuploads table
-    //    $person = Fileupload::create([
-    //         'filename' => $imageName,
-    //         'PersonId' => $id
-    //     ]);
-
-    //    return response()->json('Successfully added');
     if($request->get('file'))
        {
           $image = $request->get('file');

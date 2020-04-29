@@ -8,27 +8,20 @@ import SinglePerson from './SinglePerson';
 import FileUploadComponent from './FileUploadComponent';
 //import Alert from 'react-bootstrap/Alert'
 import { Alert } from 'reactstrap';
+//import { findDOMNode } from 'react-dom';
+import Register from "./Register";
+import Login from "./Login";
+import Home from "./Home";
 
 export default class App extends React.Component {
-    // return (
-    //     <div className="container">
-    //         <Header as='h1'>First Header</Header>
-    //         <Router>
-    //             <NavLink to = "/test">
-    //                 Test
-    //             </NavLink>
-    //             <Route path="/test">
-    //                 <p>Test </p>
-    //              </Route>
-    //         </Router>
-    //         <Button primary>Click Here</Button>
-    //     </div>
-    // );
-    constructor () {
-        super()
+    constructor (props) {
+        super(props)
         this.state = {
           success: "",
-          visible: false
+          visible: false,
+          isLoggedIn: false,
+          user: {},
+          //errors:[]
         }
     }
 
@@ -43,8 +36,39 @@ export default class App extends React.Component {
         })
     }
 
+    setLoggedIn = (appState) =>{
+      localStorage["appState"] = JSON.stringify(appState);
+      this.setState({
+          isLoggedIn: appState.isLoggedIn,
+          user: appState.user
+      });
+    }
+
+    //log out the user
+    _logoutUser = () => {
+        let appState = {
+            isLoggedIn: false,
+            user: {}
+        };
+        // save app state with user date in local storage
+        localStorage["appState"] = JSON.stringify(appState);
+        this.setState(appState);
+        this.onSuccess(`Successfully logged out!`);
+    };
+
+
+    componentDidMount() {
+        let state = localStorage["appState"];
+        if (state) {
+            let AppState = JSON.parse(state);
+            console.log(AppState);
+            this.setState({ isLoggedIn: AppState.isLoggedIn, user: AppState });
+        }
+    }
+    
+
     render () {
-        const {success} = this.state;
+        const {success, isLoggedIn} = this.state;
         return (
           <div>
           <Router>
@@ -66,6 +90,26 @@ export default class App extends React.Component {
                         Create
                     </NavLink>
                 </li>
+                {!isLoggedIn?
+                <div>
+                    <li>
+                        <NavLink to = "/register">
+                            Register
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to = "/login">
+                            Login
+                        </NavLink>
+                    </li> 
+                </div>
+                :
+                <li>
+                    <NavLink to = "/home">
+                        All Users
+                    </NavLink>
+                </li>
+                }
             </ul>
             <Switch>
                 <Route exact path='/' component={PeopleList} />
@@ -73,6 +117,24 @@ export default class App extends React.Component {
                     path='/create' 
                     //component={NewPerson} 
                     render={(props) => <NewPerson {...props} onSuccess = {this.onSuccess} />}
+                />
+                <Route
+                    path="/register"
+                    render={(props) => <Register {...props} 
+                                          onSuccess = {this.onSuccess} 
+                                          setLoggedIn = {this.setLoggedIn}
+                                      />}
+                />
+                <Route
+                    path="/home"
+                    render={(props) => <Home {...props} logoutUser = {this._logoutUser}/>}
+                />
+                <Route
+                    path="/login"
+                    render={(props) => <Login {...props} 
+                                          onSuccess = {this.onSuccess} 
+                                          setLoggedIn = {this.setLoggedIn}
+                                      />}
                 />
                 <Route 
                     path='/upload/:id' 
