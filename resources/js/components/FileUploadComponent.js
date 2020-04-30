@@ -7,8 +7,7 @@ export default class FileUploadComponent extends Component
    constructor(props) {
       super(props);
       this.state ={
-        image: '',
-        error:[]
+        image: ''
       }
       this.onFormSubmit = this.onFormSubmit.bind(this)
       this.onChange = this.onChange.bind(this)

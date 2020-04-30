@@ -55,8 +55,6 @@ class TestController extends Controller
           \Image::make($request->get('file'))->save(public_path('images/').$name);
         }
 
-
-
         $fileupload = new Fileupload();
         $fileupload->filename=$name;
         $fileupload->PersonId = $id;
