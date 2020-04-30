@@ -19,8 +19,8 @@ class TestController extends Controller
 
    public function store(Request $request){
         $validatedData = $request->validate([
-            'fname' => 'required|max:5',
-            'lname' => 'required|max:5'
+            'fname' => 'required|max:10',
+            'lname' => 'required|max:10'
         ]);
 
         // $person = new Person();

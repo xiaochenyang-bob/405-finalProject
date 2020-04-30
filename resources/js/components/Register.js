@@ -35,7 +35,7 @@ export default class Register extends React.Component{
       formData.append("name", name);
   
       axios
-        .post("/api/user/register", formData)
+        .post("http://localhost:8000/api/user/register", formData)
         .then(response => {
           console.log(response);
           history.push('/');

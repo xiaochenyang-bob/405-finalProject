@@ -33,7 +33,7 @@ export default class Test1 extends React.Component{
             agree: this.state.agree
         }
 
-        axios.post('/api/test', person)
+        axios.post('http://localhost:8000/api/test', person)
             .then((response)=>{
             // redirect to the homepage
             const {fname, lname} = this.state
