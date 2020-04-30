@@ -12,7 +12,7 @@ export default class PeopleList extends React.Component {
     }
 
     componentDidMount () {
-        axios.get('http://localhost:8000/api/test').then(response => {
+        axios.get('/api/test').then(response => {
           this.setState({
             people: response.data
           })

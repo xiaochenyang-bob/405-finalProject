@@ -23,8 +23,9 @@ export default class Home extends React.Component {
 
 
   componentDidMount() {
+    const {history} = this.props;
     axios
-      .get(`http://localhost:8000/api/users/list?token=${this.state.token}`)
+      .get(`/api/users/list?token=${this.state.token}`)
       .then(response => {
         console.log(response);
         return response;
@@ -36,7 +37,8 @@ export default class Home extends React.Component {
         } else alert("Login Failed!");
       })
       .catch(error => {
-        alert(`An Error Occured! ${error}`);
+        //alert(`An Error Occured! ${error}`);
+        history.push("/login");
       });
   }
 

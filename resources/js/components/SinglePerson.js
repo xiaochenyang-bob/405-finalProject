@@ -14,7 +14,7 @@ export default class SinglePerson extends React.Component{
 
     componentDidMount () {
         const {id} = this.props.match.params; 
-        axios.get(`http://localhost:8000/api/test/${id}`).then(response => {
+        axios.get(`/api/test/${id}`).then(response => {
             console.log(response.data);
             this.setState({
                 fname: response.data.person.fname,

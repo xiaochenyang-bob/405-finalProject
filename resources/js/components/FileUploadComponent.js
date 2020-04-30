@@ -35,7 +35,7 @@ export default class FileUploadComponent extends Component
       fileUpload(image){
         const {id} = this.props.match.params;
         const { history } = this.props;
-        let url = `http://localhost:8000/api/upload/${id}`;
+        let url = `/api/upload/${id}`;
         const formData = {file: this.state.image}
         return  post(url, formData)
                 .then(

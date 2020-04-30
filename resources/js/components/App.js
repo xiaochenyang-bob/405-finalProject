@@ -61,14 +61,13 @@ export default class App extends React.Component {
         let state = localStorage["appState"];
         if (state) {
             let AppState = JSON.parse(state);
-            console.log(AppState);
-            this.setState({ isLoggedIn: AppState.isLoggedIn, user: AppState });
+            this.setState({ isLoggedIn: AppState.isLoggedIn, user: AppState.user });
         }
     }
     
 
     render () {
-        const {success, isLoggedIn} = this.state;
+        const {user, success, isLoggedIn} = this.state;
         return (
           <div>
           <Router>
@@ -76,9 +75,7 @@ export default class App extends React.Component {
             <Alert color="success" isOpen={this.state.visible} > 
                 {success}
             </Alert>
-            <div>
-              Hi, I am your header
-            </div>
+            {!(Object.keys(user).length === 0 && user.constructor === Object)? <div>You are now logged in as {user.name}</div>: ""}
             <ul>
                 <li>
                     <NavLink to = "/">

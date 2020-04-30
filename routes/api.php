@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['jwt.auth','api-header']], function () {
+Route::group(['middleware' => 'jwt.auth'], function () {
     // protected resources, only accessble after authorization
     Route::get('users/list', function(){
         $users = App\User::all();
@@ -32,10 +32,11 @@ Route::group(['middleware' => 'api-header'], function () {
     // as users at that point have not been authenticated yet
     Route::post('user/login', 'UserController@login');
     Route::post('user/register', 'UserController@register');
+    Route::get('test', 'TestController@index');
+    Route::post('test', 'TestController@store');
+    Route::get('test/{id}', 'TestController@show');
+    Route::post('upload/{id}', 'TestController@fileStore');
 });
 
-Route::get('test', 'TestController@index');
-Route::post('test', 'TestController@store');
-Route::get('test/{id}', 'TestController@show');
-Route::post('upload/{id}', 'TestController@fileStore');
+
 
