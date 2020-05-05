@@ -1,0 +1,21 @@
+.register-form-label{
+    text-align: center;
+}
+
+.register-form{
+    margin-top:10%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.register-form-container{
+    background-image: url("images/background.jpeg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute; 
+}

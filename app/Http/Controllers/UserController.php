@@ -85,4 +85,9 @@ class UserController extends Controller
         return response()->json($response, 201);
     }
 
+    public function fetch($id){
+        $user = User::find($id);
+        return $user->toJson();
+    }
+
 }

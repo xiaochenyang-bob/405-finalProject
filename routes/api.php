@@ -26,6 +26,10 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         $response = ['success'=>true, 'data'=>$users];
         return response()->json($response, 201);
     });
+    Route::get('post', 'PostController@index');
+    Route::post('post/delete/{id}', 'PostController@delete');
+    Route::post('post/{id}', 'PostController@store');
+    Route::get('user/{id}', 'UserController@fetch');
 });
 
 Route::group(['middleware' => 'api-header'], function () {

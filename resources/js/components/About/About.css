@@ -1,0 +1,11 @@
+.about-main{
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.about-main h1{
+    text-align: center;
+}
+
+.about-main p{
+    font-size: 2em;
+}

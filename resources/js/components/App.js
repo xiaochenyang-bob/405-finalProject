@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter as Router, Route, NavLink, Switch} from 'react-router-dom'; 
+import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom'; 
 //import { Button, Checkbox, Form } from 'semantic-ui-react';
 import NewPerson from './NewPerson';
 import PeopleList from './PeopleList';
@@ -9,9 +9,16 @@ import FileUploadComponent from './FileUploadComponent';
 //import Alert from 'react-bootstrap/Alert'
 import { Alert } from 'reactstrap';
 //import { findDOMNode } from 'react-dom';
-import Register from "./Register";
-import Login from "./Login";
 import Home from "./Home";
+//used for real project
+import HomePage from "./HomePage/HomePage";
+import About from './About/About';
+import Login from "./Login/Login";
+import Register from "./Register/Register";
+import MainPage from "./MainPage/MainPage";
+import Pets from "./Pets/Pets";
+import Posts from "./Posts/Posts";
+import DeletePost from "./DeletePost/DeletePost";
 
 export default class App extends React.Component {
     constructor (props) {
@@ -21,6 +28,7 @@ export default class App extends React.Component {
           visible: false,
           isLoggedIn: false,
           user: {},
+          redirect: false
           //errors:[]
         }
     }
@@ -46,6 +54,7 @@ export default class App extends React.Component {
 
     //log out the user
     _logoutUser = () => {
+        const{history} = this.props;
         let appState = {
             isLoggedIn: false,
             user: {}
@@ -54,6 +63,7 @@ export default class App extends React.Component {
         localStorage["appState"] = JSON.stringify(appState);
         this.setState(appState);
         this.onSuccess(`Successfully logged out!`);
+        this.setState({redirect:true});
     };
 
 
@@ -67,54 +77,46 @@ export default class App extends React.Component {
     
 
     render () {
-        const {user, success, isLoggedIn} = this.state;
+        const {user, success, isLoggedIn, redirect} = this.state;
         return (
-          <div>
+          //the header and menu for mainpage
           <Router>
-              {/* the alert message */}
+            {/* the alert message */}
             <Alert color="success" isOpen={this.state.visible} > 
                 {success}
             </Alert>
-            {!(Object.keys(user).length === 0 && user.constructor === Object)? <div>You are now logged in as {user.name}</div>: ""}
-            <ul>
-                <li>
-                    <NavLink to = "/">
-                        Home
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to = "/create">
-                        Create
-                    </NavLink>
-                </li>
-                {!isLoggedIn?
-                <div>
-                    <li>
-                        <NavLink to = "/register">
-                            Register
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to = "/login">
-                            Login
-                        </NavLink>
-                    </li> 
-                </div>
-                :
-                <li>
-                    <NavLink to = "/home">
-                        All Users
-                    </NavLink>
-                </li>
-                }
-            </ul>
+            {redirect?<Redirect to="/"/>:null}
+            {/* show the header and menu is logged in */}
+            {!(Object.keys(user).length === 0 && user.constructor === Object)
+            ? 
+            (
+                <MainPage user={user} logoutUser = {this._logoutUser}/>
+            )
+            : null}
             <Switch>
-                <Route exact path='/' component={PeopleList} />
-                <Route 
-                    path='/create' 
-                    //component={NewPerson} 
-                    render={(props) => <NewPerson {...props} onSuccess = {this.onSuccess} />}
+                <Route exact path='/' component={HomePage} />
+                <Route exact path='/about' component={About}/>
+                {/* <Route 
+                    path='/mainpage'
+                    render={(props) => <MainPage {...props} user={user} logoutUser = {this._logoutUser}/>}
+                /> */}
+                <Route exact path="/pets" component={Pets} />
+                <Route exact path="/home"
+                       render={(props) => <Posts {...props} 
+                                                user = {user} 
+                                                onSuccess = {this.onSuccess} 
+                                            />}
                 />
+                <Route 
+                    path='/home/delete/:id'
+                    render={(props) => <DeletePost {...props}
+                                                onSucess = {this.onSuccess}
+                                        />}
+                />
+                {/* <Route 
+                    path='/create' 
+                    render={(props) => <NewPerson {...props} onSuccess = {this.onSuccess} />}
+                /> */}
                 <Route
                     path="/register"
                     render={(props) => <Register {...props} 
@@ -122,10 +124,10 @@ export default class App extends React.Component {
                                           setLoggedIn = {this.setLoggedIn}
                                       />}
                 />
-                <Route
+                {/* <Route
                     path="/home"
                     render={(props) => <Home {...props} logoutUser = {this._logoutUser}/>}
-                />
+                /> */}
                 <Route
                     path="/login"
                     render={(props) => <Login {...props} 
@@ -133,15 +135,14 @@ export default class App extends React.Component {
                                           setLoggedIn = {this.setLoggedIn}
                                       />}
                 />
-                <Route 
+                {/* <Route 
                     path='/upload/:id' 
                     //component={FileUploadComponent}
                     render={(props) => <FileUploadComponent {...props} onSuccess = {this.onSuccess}/>}
                 />
-                <Route path='/:id' component={SinglePerson}/>
+                <Route path='/:id' component={SinglePerson}/> */}
             </Switch>
           </Router>
-          </div>
         )
       }
 }
