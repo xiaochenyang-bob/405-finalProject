@@ -38,7 +38,7 @@ export default class Login extends React.Component{
     formData.append("password", password);
 
     axios
-      .post("/api/user/login/", formData)
+      .post("/api/user/login", formData)
       .then(response => {
         console.log(response);
         return response;
@@ -96,7 +96,7 @@ export default class Login extends React.Component{
   render(){
     return (
         <div className="login-form-container">
-          <Form className="login-form" action="" onSubmit={this.handleLogin} method="post">
+          <Form className="login-form" action="" onSubmit={this.handleLogin} method="get">
             <h3 className="login-form-label" style={{ padding: 15 }}>Login Form</h3>
             <Alert color="warning" isOpen={this.state.visible} > 
                 Login Failed 
