@@ -25,11 +25,6 @@ export default class Register extends React.Component{
 
     registerUser = (name, email, password) => {
       const { history } = this.props;
-      $("#email-login-btn")
-        .attr("disabled", "disabled")
-        .html(
-          '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span>'
-        );
       var formData = new FormData(); 
       formData.append("password", password);
       formData.append("email", email);
@@ -58,21 +53,12 @@ export default class Register extends React.Component{
             // save app state with user date in local storage
             this.props.setLoggedIn(appState);
             history.push('/home');
-          } else {
-            alert(`Registration Failed!`);
-            $("#email-login-btn")
-              .removeAttr("disabled")
-              .html("Register");
-          }
+          } 
         })
         .catch(error => {
           this.setState({
             errors: error.response.data.errors
           });
-          console.log(`${formData} ${error}`);
-          $("#email-login-btn")
-            .removeAttr("disabled")
-            .html("Register");
         });
     }
 

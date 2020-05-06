@@ -33,11 +33,6 @@ export default class Login extends React.Component{
 
   loginUser = (email, password) => {
     const { history } = this.props;
-    $("#login-form button")
-      .attr("disabled", "disabled")
-      .html(
-        '<i class="fa fa-spinner fa-spin fa-1x fa-fw"></i><span class="sr-only">Loading...</span>'
-      );
     var formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -70,18 +65,11 @@ export default class Login extends React.Component{
         {
             this.loginFailed();
         }
-
-        $("#login-form button")
-          .removeAttr("disabled")
-          .html("Login");
       })
       .catch(error => {
         this.setState({
           errors: error.response.data.errors
         });
-        $("#login-form button")
-          .removeAttr("disabled")
-          .html("Login");
       });
   }
 
