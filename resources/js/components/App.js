@@ -20,6 +20,7 @@ import EditPet from './EditPet/EditPet';
 import DeletePet from './DeletePet/DeletePet';
 import UserList from './UserList/UserList';
 import ContactList from './ContactList/ContactList';
+import Chat from './Chat/Chat';
 
 export default class App extends React.Component {
     constructor (props) {
@@ -229,6 +230,11 @@ export default class App extends React.Component {
                 <Route
                     exact path="/users/:id"
                     render={(props) => <ContactList {...props}
+                                            user={user}
+                                        />}
+                />
+                <Route path="/chat" 
+                    render={(props) => <Chat {...props}
                                             user={user}
                                         />}
                 />

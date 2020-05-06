@@ -24,11 +24,6 @@ export default class ContactList extends React.Component{
         });
     }
 
-    message = (id1, id2)=>{
-        console.log(id1);
-        console.log(id2);
-    }
-
     render(){
         const {contacts} = this.state;
         const {user} = this.props;
@@ -48,10 +43,12 @@ export default class ContactList extends React.Component{
                         </Item.Meta>
                         <Item.Description>Email: {contact.email}</Item.Description>
                         <Item.Extra>
-                        <Button color='blue' floated='right' onClick={(event)=>this.message(user.id, contact.id)}>
-                                Message {user.name}
+                        <NavLink to={`/chat?name=${user.name}&room=chatroom`}>
+                        <Button color='blue' floated='right'>
+                                Message {contact.name}
                             <Icon name='right chevron' />
                         </Button >
+                        </NavLink>
                         </Item.Extra>
                         </Item.Content>
                     </Item>
