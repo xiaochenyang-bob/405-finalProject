@@ -88,7 +88,7 @@ export default class UserList extends React.Component{
         console.log(id1);
         console.log(id2);
         axios
-        .post(`/api/contacts/add/${id1}/${id2}/?token=${this.state.token}`)
+        .post(`/api/contacts/add/${id1}/${id2}?token=${this.state.token}`)
         .then(response => {
             this.props.onSuccess(`Successfully created contacts!`);
             const path = "/users/" + id1;
