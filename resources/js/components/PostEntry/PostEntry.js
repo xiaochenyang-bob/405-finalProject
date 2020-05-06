@@ -74,7 +74,7 @@ export default class  PostEntry extends React.Component
                     errors: []
                 });
                 document.getElementById("uploadCaptureInputFile").value = "";
-                window.location = "/home";
+                history.push("/home");
             }
         ).catch(error => {
             console.log(error);

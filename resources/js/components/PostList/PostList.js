@@ -17,7 +17,6 @@ export default class PostList extends React.Component{
     componentDidMount = () => {
         const {history} = this.props;
         axios.get(`/api/post?token=${this.state.token}`).then(response => {
-          console.log(response.data);
           this.setState({
             posts: response.data
           })
@@ -50,7 +49,7 @@ export default class PostList extends React.Component{
                         {user.name === post.user.name?
                             <Item.Extra>
                             <NavLink to={`home/delete/${post.PostId}`}> 
-                                <Button color='red' floated='right' onClick={this.open}>
+                                <Button color='red' floated='right'>
                                     Delete
                                 <Icon name='right chevron' />
                                 </Button >

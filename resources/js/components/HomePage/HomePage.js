@@ -14,8 +14,8 @@ const HomePage = () =>(
         <div className="clearfloat"></div>
         <div className="homepage-main">
             <div className="clear-float"></div>
-            <NavLink to={`/pets`}>
-                <Button type="submit" color='blue'>Check our our pets!</Button>
+            <NavLink to={`/pets/all`}>
+                <Button type="submit" color='blue'>Check out our pets!</Button>
             </NavLink>
             <NavLink to={`/register`}>
                 <Button type="submit" color='blue'>Register today!</Button>

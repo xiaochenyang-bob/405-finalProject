@@ -4,18 +4,44 @@ import logo from "./image/website-logo.png";
 import {Header, Image, Menu, Button} from 'semantic-ui-react';
 import "./MainPage.css";
 
-const MainPage = ({history, user, logoutUser}) =>{
-    const [activeItem, setActiveItem] = useState('');
-   
+const MainPage = (props) =>{
+    const [activeItem, setActiveItem] = useState('home');
+    //console.log(props);
+    const {redirectAllPets, redirectHome, redirectMyPets, redirectReset, redirectUsers, redirectContacts, user, logoutUser} = props;
     useEffect(()=>{
-        //to do
+        //to d0
+        redirectReset();
         if (activeItem === 'logout')
         {
             logoutUser();
         }
     },[activeItem]);
 
-    const handleItemClick = (e, { name }) => setActiveItem(name);
+    const handleItemClick = (e, { name }) => 
+    {
+        const {id} = user;
+        setActiveItem(name);
+        if (name==='home')
+        {
+            redirectHome();
+        }
+        else if (name === "my pets")
+        {
+            redirectMyPets();
+        }
+        else if (name === "all pets")
+        {
+            redirectAllPets();
+        }
+        else if (name === "people")
+        {
+            redirectUsers();
+        }
+        else if (name === "contacts")
+        {
+            redirectContacts();
+        }
+    }
 
     return(
         <div className="main-page-container">
@@ -33,6 +59,11 @@ const MainPage = ({history, user, logoutUser}) =>{
             <div className="main-page-menu">
                 <Menu pointing secondary>
                     <Menu.Item
+                        name='home'
+                        active={activeItem === 'home'}
+                        onClick={handleItemClick}
+                    />
+                    <Menu.Item
                         name='all pets'
                         active={activeItem === 'all pets'}
                         onClick={handleItemClick}
@@ -47,6 +78,12 @@ const MainPage = ({history, user, logoutUser}) =>{
                         active={activeItem === 'my pets'}
                         onClick={handleItemClick}
                     />
+                    <Menu.Item
+                        name='contacts'
+                        active={activeItem === 'contacts'}
+                        onClick={handleItemClick}
+                    />
+
                     <Menu.Menu position='right'>
                         <Menu.Item
                         name='logout'

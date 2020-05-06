@@ -2,14 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom'; 
 //import { Button, Checkbox, Form } from 'semantic-ui-react';
-import NewPerson from './NewPerson';
-import PeopleList from './PeopleList';
-import SinglePerson from './SinglePerson';
-import FileUploadComponent from './FileUploadComponent';
 //import Alert from 'react-bootstrap/Alert'
 import { Alert } from 'reactstrap';
 //import { findDOMNode } from 'react-dom';
-import Home from "./Home";
 //used for real project
 import HomePage from "./HomePage/HomePage";
 import About from './About/About';
@@ -19,6 +14,12 @@ import MainPage from "./MainPage/MainPage";
 import Pets from "./Pets/Pets";
 import Posts from "./Posts/Posts";
 import DeletePost from "./DeletePost/DeletePost";
+import MyPets from './MyPets/MyPets';
+import CreatePet from './CreatePet/CreatePet';
+import EditPet from './EditPet/EditPet';
+import DeletePet from './DeletePet/DeletePet';
+import UserList from './UserList/UserList';
+import ContactList from './ContactList/ContactList';
 
 export default class App extends React.Component {
     constructor (props) {
@@ -28,8 +29,12 @@ export default class App extends React.Component {
           visible: false,
           isLoggedIn: false,
           user: {},
-          redirect: false
-          //errors:[]
+          redirect: false,
+          redirectHome: false,
+          redirectMyPets: false,
+          redirectAllPets: false,
+          redirectUsers: false,
+          redirectContacts: false
         }
     }
 
@@ -54,7 +59,6 @@ export default class App extends React.Component {
 
     //log out the user
     _logoutUser = () => {
-        const{history} = this.props;
         let appState = {
             isLoggedIn: false,
             user: {}
@@ -65,6 +69,47 @@ export default class App extends React.Component {
         this.onSuccess(`Successfully logged out!`);
         this.setState({redirect:true});
     };
+
+    redirectHome = () => {
+        this.setState({
+            redirectHome: true
+        });
+    }
+
+    redirectMyPets = () => {
+        this.setState({
+            redirectMyPets: true
+        });
+    }
+
+    redirectAllPets = () => {
+        this.setState({
+            redirectAllPets: true
+        });
+    }
+
+    redirectUsers = () => {
+        this.setState({
+            redirectUsers: true
+        });
+    }
+
+    redirectContacts = () => {
+        this.setState({
+            redirectContacts: true
+        });
+    }
+
+    redirectReset = () =>{
+        this.setState({
+            redirect: false,
+            redirectHome: false,
+            redirectMyPets: false,
+            redirectAllPets: false,
+            redirectUsers: false,
+            redirectContacts: false
+        });
+    }
 
 
     componentDidMount() {
@@ -77,7 +122,7 @@ export default class App extends React.Component {
     
 
     render () {
-        const {user, success, isLoggedIn, redirect} = this.state;
+        const {user, success, isLoggedIn, redirect, redirectHome, redirectMyPets, redirectAllPets, redirectContacts, redirectUsers} = this.state;
         return (
           //the header and menu for mainpage
           <Router>
@@ -86,11 +131,23 @@ export default class App extends React.Component {
                 {success}
             </Alert>
             {redirect?<Redirect to="/"/>:null}
+            {redirectHome?<Redirect to="/home"/>:null}
+            {redirectMyPets?<Redirect to={`/pets/${user.id}`}/>:null}
+            {redirectAllPets?<Redirect to={`/pets/all`}/>:null}
+            {redirectUsers?<Redirect to={`/users/all`}/>:null}
+            {redirectContacts?<Redirect to={`/users/${user.id}`}/>:null}
             {/* show the header and menu is logged in */}
             {!(Object.keys(user).length === 0 && user.constructor === Object)
             ? 
             (
-                <MainPage user={user} logoutUser = {this._logoutUser}/>
+                <MainPage redirectHome={this.redirectHome} 
+                          redirectMyPets={this.redirectMyPets} 
+                          redirectReset={this.redirectReset} 
+                          redirectAllPets={this.redirectAllPets}
+                          redirectUsers={this.redirectUsers}
+                          redirectContacts={this.redirectContacts}
+                          user={user} 
+                          logoutUser = {this._logoutUser}/>
             )
             : null}
             <Switch>
@@ -100,7 +157,34 @@ export default class App extends React.Component {
                     path='/mainpage'
                     render={(props) => <MainPage {...props} user={user} logoutUser = {this._logoutUser}/>}
                 /> */}
-                <Route exact path="/pets" component={Pets} />
+                <Route exact path="/pets/all" 
+                        render={(props) => <Pets {...props} 
+                        user={user}
+                />}
+                />
+                <Route exact path="/pets/create/:id" 
+                       render={(props) => <CreatePet {...props} 
+                       user = {user} 
+                       onSuccess = {this.onSuccess} 
+                 />}
+                />
+                <Route exact path="/pets/:id" 
+                       render={(props) => <MyPets {...props} 
+                       user = {user} 
+                 />}
+                />
+                <Route exact path="/pets/edit/:id" 
+                       render={(props) => <EditPet {...props} 
+                       user = {user} 
+                       onSuccess = {this.onSuccess} 
+                 />}
+                />
+                <Route exact path="/pets/delete/:id" 
+                       render={(props) => <DeletePet {...props} 
+                       user = {user} 
+                       onSuccess = {this.onSuccess} 
+                 />}
+                />
                 <Route exact path="/home"
                        render={(props) => <Posts {...props} 
                                                 user = {user} 
@@ -108,7 +192,7 @@ export default class App extends React.Component {
                                             />}
                 />
                 <Route 
-                    path='/home/delete/:id'
+                    exact path='/home/delete/:id'
                     render={(props) => <DeletePost {...props}
                                                 onSucess = {this.onSuccess}
                                         />}
@@ -134,6 +218,19 @@ export default class App extends React.Component {
                                           onSuccess = {this.onSuccess} 
                                           setLoggedIn = {this.setLoggedIn}
                                       />}
+                />
+                <Route
+                    exact path="/users/all"
+                    render={(props) => <UserList {...props} 
+                                          onSuccess = {this.onSuccess} 
+                                          currentUser = {user}
+                                      />}
+                />
+                <Route
+                    exact path="/users/:id"
+                    render={(props) => <ContactList {...props}
+                                            user={user}
+                                        />}
                 />
                 {/* <Route 
                     path='/upload/:id' 

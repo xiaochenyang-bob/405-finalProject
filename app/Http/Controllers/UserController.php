@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use DB;
 use JWTAuth;
 use JWTAuthException;
 
@@ -85,9 +86,41 @@ class UserController extends Controller
         return response()->json($response, 201);
     }
 
-    public function fetch($id){
-        $user = User::find($id);
+    public function find($name){
+        $user= User::where('Name', 'LIKE','%'.$name.'%')
+                ->orderBy('created_at')
+                ->get();
         return $user->toJson();
+    }
+
+    public function select($name){
+        $user= User::where('Name', 'LIKE','%'.$name.'%')
+                ->orderBy('created_at')
+                ->first();
+        $user = [
+            'user' => $user,
+            'contacts' => $user->contacts
+        ];
+        return \json_encode($user);
+    }
+
+    public function addContact($id1, $id2){
+        DB::table('contacts')->insert([
+            'User1Id' => $id1,
+            'User2Id' => $id2
+        ]);
+
+        DB::table('contacts')->insert([
+            'User1Id' => $id2,
+            'User2Id' => $id1
+        ]);
+
+        return response()->json('Successfully added relationship');
+    }
+
+    public function contact($id){
+        $contacts = User::find($id)->contacts;
+        return \json_encode($contacts);
     }
 
 }

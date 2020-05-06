@@ -17,7 +17,7 @@ const DeletePost = (props) =>{
     }
 
     return(
-        <div>
+        <div className="delete-post-container">
         <h1>Are you sure you want to delete this post?</h1>
         <NavLink to={`/home`}> 
             <Button>

@@ -39,7 +39,6 @@ export default class Register extends React.Component{
         .post("/api/user/register", formData)
         .then(response => {
           console.log(response);
-          history.push('/home');
           return response;
         })
         .then(json => {
@@ -58,6 +57,7 @@ export default class Register extends React.Component{
             };
             // save app state with user date in local storage
             this.props.setLoggedIn(appState);
+            history.push('/home');
           } else {
             alert(`Registration Failed!`);
             $("#email-login-btn")
